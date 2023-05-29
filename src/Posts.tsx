@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { UseQueryResult, useQuery } from "@tanstack/react-query";
 
 import { PostDetail } from "./PostDetail";
 import { Post } from "./types";
@@ -16,7 +17,9 @@ export function Posts() {
   const [selectedPost, setSelectedPost] = useState<Post|null>(null);
 
   // replace with useQuery
-  const data:Post[] = [];
+  const {data, isError, error, isLoading}:UseQueryResult<Post[],Error> = useQuery({queryKey:["posts"],queryFn: fetchPosts})
+  if(isLoading)return <h3>Loading...</h3>
+  if(isError) return <><h3>Oops something went wrong</h3><p>{error.message}</p></>
 
   return (
     <>
